@@ -1,18 +1,845 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="scroll-smooth">
 <head>
-    <title>My Basic Website</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Information - Government of Canada Prototype</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Modal animation */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-overlay { animation: fadeIn 0.2s ease-out; }
+        .modal-content { animation: slideUp 0.3s ease-out; }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        goc: {
+                            blue: '#1e2b4d',
+                            red: '#e31837',
+                            lightblue: '#e8f2f8',
+                            link: '#2b6cb0'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
-    <h1>Welcome to My Website</h1>
-    <p>This is a very basic webpage made with HTML.</p>
+<body class="text-gray-800 antialiased flex flex-col h-screen overflow-hidden">
 
-    <h2>About Me</h2>
-    <p>I am learning how to build websites.</p>
+    <!-- 1. Top Header -->
+    <header class="bg-white border-b border-gray-200 px-6 py-3 flex flex-col sm:flex-row justify-between items-center z-20 relative flex-shrink-0">
+        <!-- Logo -->
+        <div class="flex items-center space-x-4 mb-4 sm:mb-0">
+            <svg class="w-8 h-6" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+                <rect width="600" height="300" fill="#f00"/>
+                <rect x="150" width="300" height="300" fill="#fff"/>
+                <path d="M300 30l15 45h45l-35 30 15 50-40-30-40 30 15-50-35-30h45z" fill="#f00" transform="scale(1.8) translate(-133, 10)"/>
+            </svg>
+            <div class="flex flex-col text-sm font-semibold leading-tight">
+                <span>Government</span><span>of Canada</span>
+            </div>
+            <div class="flex flex-col text-sm font-semibold leading-tight border-l border-gray-300 pl-4">
+                <span>Gouvernement</span><span>du Canada</span>
+            </div>
+        </div>
 
-    <h2>Links</h2>
-    <ul>
-        <li><a href="https://example.com">Example Link</a></li>
-    </ul>
+        <!-- User Nav -->
+        <div class="flex items-center space-x-6 text-sm">
+            <a href="#" class="demo-link hover:underline text-gray-700">Français</a>
+            <span class="text-gray-300">|</span>
+            <a href="#" class="demo-link hover:underline text-gray-700">Sign out</a>
+            <div class="demo-link flex items-center space-x-2 cursor-pointer hover:bg-gray-50 py-1 px-2 rounded">
+                <div class="bg-goc-blue text-white rounded-full w-8 h-8 flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <span class="font-medium">Taylor Morgan</span>
+                <i class="fa-solid fa-chevron-down text-xs text-gray-500"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main App Container (Sidebar + Content) -->
+    <div class="flex flex-1 overflow-hidden">
+        
+        <!-- Left Sidebar -->
+        <aside class="w-full md:w-64 bg-[#f8f9fa] border-r border-gray-200 flex-shrink-0 overflow-y-auto hidden md:block">
+            <nav class="py-6">
+                <div class="px-6 mb-2 flex items-center space-x-3 text-gray-800 font-bold">
+                    <i class="fa-solid fa-user-circle text-lg"></i>
+                    <span>My Information</span>
+                </div>
+                <ul class="space-y-1 mt-4">
+                    <li>
+                        <a href="#overview" class="flex items-center space-x-3 px-6 py-3 bg-goc-lightblue border-l-4 border-goc-blue text-goc-blue font-semibold">
+                            <i class="fa-solid fa-house w-5 text-center"></i><span>Overview</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#your-information" class="flex items-center space-x-3 px-6 py-3 border-l-4 border-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors">
+                            <i class="fa-solid fa-database w-5 text-center"></i><span>My Data</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#access-permissions" class="flex items-center space-x-3 px-6 py-3 border-l-4 border-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors">
+                            <i class="fa-solid fa-shield-halved w-5 text-center"></i><span>Access & Permissions</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#access-history" class="flex items-center space-x-3 px-6 py-3 border-l-4 border-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors">
+                            <i class="fa-solid fa-clock-rotate-left w-5 text-center"></i><span>Access History</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#forms-services" class="flex items-center space-x-3 px-6 py-3 border-l-4 border-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors">
+                            <i class="fa-regular fa-file-lines w-5 text-center"></i><span>Forms & Services</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="demo-link flex items-center space-x-3 px-6 py-3 border-l-4 border-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors">
+                            <i class="fa-solid fa-bell w-5 text-center"></i><span>Notifications</span>
+                        </a>
+                    </li>
+                    <li class="pt-4 mt-4 border-t border-gray-200"></li>
+                    <li>
+                        <a href="#" class="demo-link flex items-center space-x-3 px-6 py-3 border-l-4 border-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors">
+                            <i class="fa-solid fa-gear w-5 text-center"></i><span>Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="demo-link flex items-center space-x-3 px-6 py-3 border-l-4 border-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors">
+                            <i class="fa-solid fa-circle-question w-5 text-center"></i><span>Help & Support</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto bg-gray-50 flex flex-col relative" id="main-scroll-area">
+            
+            <!-- 2. Dark Blue Sub-header -->
+            <div id="overview" class="bg-goc-blue text-white px-8 py-8 relative flex justify-end items-center flex-shrink-0">
+                <!-- Faint Parliament Silhouette Background Simulation -->
+                <div class="absolute inset-0 opacity-10 pointer-events-none" style="background: radial-gradient(circle at 80% 100%, #ffffff 0%, transparent 60%);"></div>
+                <div class="text-right z-10 mr-4 sm:mr-12">
+                    <h2 class="text-2xl sm:text-3xl font-medium tracking-wide leading-tight">Your information.<br>A simpler Canada.</h2>
+                </div>
+            </div>
+
+            <!-- Content Padding Wrapper -->
+            <div class="p-6 md:p-10 max-w-7xl mx-auto w-full flex-1">
+                
+                <!-- Main Content Header -->
+                <div class="mb-10">
+                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">My Information for a Brighter Tomorrow</h1>
+                    <p class="text-gray-600 text-lg sm:text-xl max-w-3xl">Keep your key information up to date and securely share it across Government of Canada services.</p>
+                </div>
+
+                <!-- Feature Row -->
+                <div class="flex flex-col md:flex-row gap-6 mb-12 border-b border-gray-200 pb-10">
+                    <div class="flex items-start space-x-4 flex-1">
+                        <div class="text-goc-blue text-3xl mt-1"><i class="fa-solid fa-lock"></i></div>
+                        <div><p class="font-semibold text-gray-900 text-lg leading-snug">You control<br>your information</p></div>
+                    </div>
+                    <div class="flex items-start space-x-4 flex-1">
+                        <div class="text-goc-blue text-3xl mt-1"><i class="fa-solid fa-user-group"></i></div>
+                        <div><p class="font-semibold text-gray-900 text-lg leading-snug">You choose<br>who can access it</p></div>
+                    </div>
+                    <div class="flex items-start space-x-4 flex-1">
+                        <div class="text-goc-blue text-3xl mt-1"><i class="fa-solid fa-file-invoice"></i></div>
+                        <div><p class="font-semibold text-gray-900 text-lg leading-snug">Less repetition.<br>A simpler experience.</p></div>
+                    </div>
+                </div>
+
+                <!-- Section 1: Your Information -->
+                <section id="your-information" class="mb-12 scroll-mt-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col">
+                        <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white">
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900">Your Information</h3>
+                                <p class="text-sm text-gray-500 mt-1">Manage your master data (tombstone)</p>
+                            </div>
+                            <a href="#" class="demo-link text-goc-link hover:underline text-sm font-medium flex items-center">View all <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                        </div>
+                        <!-- 3-column grid as requested -->
+                        <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 bg-[#fcfdfd]">
+                            <a href="#" class="data-card group border border-gray-200 rounded-lg p-5 flex items-start justify-between hover:border-goc-blue hover:shadow-md transition-all bg-white" data-type="Addresses">
+                                <div class="flex items-start space-x-4">
+                                    <i class="fa-solid fa-house text-goc-blue mt-1 text-xl w-6 text-center"></i>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 text-base">Addresses</h4>
+                                        <p class="text-sm text-gray-500 leading-tight mt-1">Home, mailing,<br>previous addresses</p>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-gray-400 group-hover:text-goc-blue mt-1"></i>
+                            </a>
+                            <a href="#" class="data-card group border border-gray-200 rounded-lg p-5 flex items-start justify-between hover:border-goc-blue hover:shadow-md transition-all bg-white" data-type="Employment">
+                                <div class="flex items-start space-x-4">
+                                    <i class="fa-solid fa-briefcase text-goc-blue mt-1 text-xl w-6 text-center"></i>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 text-base">Employment</h4>
+                                        <p class="text-sm text-gray-500 leading-tight mt-1">Current and past<br>employment</p>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-gray-400 group-hover:text-goc-blue mt-1"></i>
+                            </a>
+                            <a href="#" class="data-card group border border-gray-200 rounded-lg p-5 flex items-start justify-between hover:border-goc-blue hover:shadow-md transition-all bg-white" data-type="Family Connections">
+                                <div class="flex items-start space-x-4">
+                                    <i class="fa-solid fa-users text-goc-blue mt-1 text-xl w-6 text-center"></i>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 text-base">Family Connections</h4>
+                                        <p class="text-sm text-gray-500 leading-tight mt-1">Spouse, children,<br>other family members</p>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-gray-400 group-hover:text-goc-blue mt-1"></i>
+                            </a>
+                            <a href="#" class="data-card group border border-gray-200 rounded-lg p-5 flex items-start justify-between hover:border-goc-blue hover:shadow-md transition-all bg-white" data-type="References">
+                                <div class="flex items-start space-x-4">
+                                    <i class="fa-solid fa-user-check text-goc-blue mt-1 text-xl w-6 text-center"></i>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 text-base">References</h4>
+                                        <p class="text-sm text-gray-500 leading-tight mt-1">Personal and<br>professional references</p>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-gray-400 group-hover:text-goc-blue mt-1"></i>
+                            </a>
+                            <a href="#" class="data-card group border border-gray-200 rounded-lg p-5 flex items-start justify-between hover:border-goc-blue hover:shadow-md transition-all bg-white" data-type="Identity Information">
+                                <div class="flex items-start space-x-4">
+                                    <i class="fa-solid fa-id-card text-goc-blue mt-1 text-xl w-6 text-center"></i>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 text-base">Identity Information</h4>
+                                        <p class="text-sm text-gray-500 leading-tight mt-1">Legal name, aliases,<br>date of birth</p>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-gray-400 group-hover:text-goc-blue mt-1"></i>
+                            </a>
+                            <a href="#" class="data-card group border border-gray-200 rounded-lg p-5 flex items-start justify-between hover:border-goc-blue hover:shadow-md transition-all bg-white" data-type="Contact Information">
+                                <div class="flex items-start space-x-4">
+                                    <i class="fa-solid fa-phone text-goc-blue mt-1 text-xl w-6 text-center"></i>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 text-base">Contact Information</h4>
+                                        <p class="text-sm text-gray-500 leading-tight mt-1">Phone numbers,<br>email addresses</p>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-gray-400 group-hover:text-goc-blue mt-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-12">
+                    <!-- Section 2: Access & Permissions -->
+                    <section id="access-permissions" class="scroll-mt-6">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-full flex flex-col">
+                            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-900">Access & Permissions</h3>
+                                    <p class="text-sm text-gray-500 mt-1">Control which departments can use your info.</p>
+                                </div>
+                                <a href="#" class="demo-link text-goc-link hover:underline text-sm font-medium flex items-center">Manage <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                            </div>
+                            <ul class="divide-y divide-gray-100 flex-1">
+                                <li class="access-row px-6 py-5 hover:bg-gray-50 transition-colors flex items-center justify-between group cursor-pointer focus:outline-none focus:bg-gray-100 focus:ring-2 focus:ring-inset focus:ring-goc-blue" tabindex="0" role="button" aria-label="Manage access for Employment and Social Development Canada" data-dept="Employment and Social Development Canada (ESDC)" data-status="granted">
+                                    <div class="flex items-center space-x-5">
+                                        <div class="w-8 flex justify-center text-red-600 text-lg"><i class="fa-solid fa-building-user"></i></div>
+                                        <span class="text-base font-medium text-gray-800">Employment and Social<br>Development Canada (ESDC)</span>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <span class="status-pill px-3 py-1 text-xs font-bold rounded-full bg-green-100 text-green-800 border border-green-200">Access granted</span>
+                                        <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-gray-500"></i>
+                                    </div>
+                                </li>
+                                <li class="access-row px-6 py-5 hover:bg-gray-50 transition-colors flex items-center justify-between group cursor-pointer focus:outline-none focus:bg-gray-100 focus:ring-2 focus:ring-inset focus:ring-goc-blue" tabindex="0" role="button" aria-label="Manage access for Canada Revenue Agency" data-dept="Canada Revenue Agency (CRA)" data-status="granted">
+                                    <div class="flex items-center space-x-5">
+                                        <div class="w-8 flex justify-center text-red-600 text-lg"><i class="fa-solid fa-money-check-dollar"></i></div>
+                                        <span class="text-base font-medium text-gray-800">Canada Revenue Agency (CRA)</span>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <span class="status-pill px-3 py-1 text-xs font-bold rounded-full bg-green-100 text-green-800 border border-green-200">Access granted</span>
+                                        <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-gray-500"></i>
+                                    </div>
+                                </li>
+                                <li class="access-row px-6 py-5 hover:bg-gray-50 transition-colors flex items-center justify-between group cursor-pointer focus:outline-none focus:bg-gray-100 focus:ring-2 focus:ring-inset focus:ring-goc-blue" tabindex="0" role="button" aria-label="Manage access for Immigration, Refugees and Citizenship Canada" data-dept="Immigration, Refugees and Citizenship Canada (IRCC)" data-status="revoked">
+                                    <div class="flex items-center space-x-5">
+                                        <div class="w-8 flex justify-center text-red-600 text-lg"><i class="fa-solid fa-passport"></i></div>
+                                        <span class="text-base font-medium text-gray-800">Immigration, Refugees and<br>Citizenship Canada (IRCC)</span>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <span class="status-pill px-3 py-1 text-xs font-bold rounded-full bg-gray-100 text-gray-600 border border-gray-200">Not granted</span>
+                                        <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-gray-500"></i>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="p-4 border-t border-gray-100 bg-gray-50 text-right">
+                                <a href="#" class="demo-link text-goc-link hover:underline text-sm font-medium">View all departments <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Section 3: Recent Access History -->
+                    <section id="access-history" class="scroll-mt-6">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-full flex flex-col">
+                            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-900">Recent Access History</h3>
+                                    <p class="text-sm text-gray-500 mt-1">See when and by whom your info was accessed.</p>
+                                </div>
+                                <a href="#" class="demo-link text-goc-link hover:underline text-sm font-medium flex items-center">View all <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                            </div>
+                            <div class="overflow-x-auto flex-1">
+                                <table class="w-full text-sm text-left whitespace-nowrap">
+                                    <thead class="text-xs text-gray-700 bg-gray-50 border-b border-gray-200">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-4 font-semibold uppercase tracking-wider">Date</th>
+                                            <th scope="col" class="px-6 py-4 font-semibold uppercase tracking-wider">Department</th>
+                                            <th scope="col" class="px-6 py-4 font-semibold uppercase tracking-wider">Accessed</th>
+                                            <th scope="col" class="px-6 py-4 font-semibold uppercase tracking-wider">Purpose</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100 text-sm">
+                                        <tr class="demo-link hover:bg-gray-50 cursor-pointer">
+                                            <td class="px-6 py-4 text-gray-600">Apr 10, 2025</td>
+                                            <td class="px-6 py-4 font-bold text-gray-800">CRA</td>
+                                            <td class="px-6 py-4 text-gray-600">Address, employment</td>
+                                            <td class="px-6 py-4 text-gray-600">Tax return (T1)</td>
+                                        </tr>
+                                        <tr class="demo-link hover:bg-gray-50 cursor-pointer">
+                                            <td class="px-6 py-4 text-gray-600">Mar 22, 2025</td>
+                                            <td class="px-6 py-4 font-bold text-gray-800">ESDC</td>
+                                            <td class="px-6 py-4 text-gray-600">Employment, family</td>
+                                            <td class="px-6 py-4 text-gray-600">EI application</td>
+                                        </tr>
+                                        <tr class="demo-link hover:bg-gray-50 cursor-pointer">
+                                            <td class="px-6 py-4 text-gray-600">Feb 14, 2025</td>
+                                            <td class="px-6 py-4 font-bold text-gray-800">IRCC</td>
+                                            <td class="px-6 py-4 text-gray-600">Identity, family</td>
+                                            <td class="px-6 py-4 text-gray-600">Permanent residence</td>
+                                        </tr>
+                                        <tr class="demo-link hover:bg-gray-50 cursor-pointer">
+                                            <td class="px-6 py-4 text-gray-600">Jan 8, 2025</td>
+                                            <td class="px-6 py-4 font-bold text-gray-800">Service Canada</td>
+                                            <td class="px-6 py-4 text-gray-600">Address</td>
+                                            <td class="px-6 py-4 text-gray-600">CPP enrollment</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Section 4: Forms & Services -->
+                <section id="forms-services" class="mb-10 scroll-mt-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white">
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900">Forms & Services That Use Your Information</h3>
+                                <p class="text-sm text-gray-500 mt-1">See which Government of Canada forms and services need your information.</p>
+                            </div>
+                            <a href="#" class="demo-link text-goc-link hover:underline text-sm font-medium flex items-center">View all <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                        </div>
+                        <ul class="divide-y divide-gray-100">
+                            <li class="demo-link px-6 py-4 hover:bg-gray-50 transition-colors flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-start space-x-4">
+                                    <i class="fa-regular fa-file-lines text-gray-400 mt-1 text-xl"></i>
+                                    <div>
+                                        <h4 class="text-base font-bold text-gray-800">T1 Personal Tax Return (CRA)</h4>
+                                        <p class="text-sm text-gray-500 mt-1">Uses: address, employment, family connections</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-4 ml-4">
+                                    <span class="px-3 py-1 text-xs font-bold rounded-full bg-green-50 text-green-700 border border-green-200">Up to date</span>
+                                    <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-gray-500"></i>
+                                </div>
+                            </li>
+                            <li class="demo-link px-6 py-4 hover:bg-gray-50 transition-colors flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-start space-x-4">
+                                    <i class="fa-regular fa-file-lines text-gray-400 mt-1 text-xl"></i>
+                                    <div>
+                                        <h4 class="text-base font-bold text-gray-800">Employment Insurance Application (ESDC)</h4>
+                                        <p class="text-sm text-gray-500 mt-1">Uses: employment, address, references</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-4 ml-4">
+                                    <span class="px-3 py-1 text-xs font-bold rounded-full bg-orange-100 text-orange-800 border border-orange-200">Needs update</span>
+                                    <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-gray-500"></i>
+                                </div>
+                            </li>
+                            <li class="demo-link px-6 py-4 hover:bg-gray-50 transition-colors flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-start space-x-4">
+                                    <i class="fa-regular fa-file-lines text-gray-400 mt-1 text-xl"></i>
+                                    <div>
+                                        <h4 class="text-base font-bold text-gray-800">Study Permit Application (IRCC)</h4>
+                                        <p class="text-sm text-gray-500 mt-1">Uses: identity, family connections, address</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-4 ml-4">
+                                    <span class="px-3 py-1 text-xs font-bold rounded-full bg-green-50 text-green-700 border border-green-200">Up to date</span>
+                                    <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-gray-500"></i>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Call to Action Box -->
+                <div class="bg-[#e8eff5] rounded-xl border border-[#c5d5e4] p-6 flex flex-col sm:flex-row justify-between items-center mb-8">
+                    <div class="flex items-start space-x-5 mb-5 sm:mb-0">
+                        <div class="bg-goc-blue text-white rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0 mt-1">
+                            <i class="fa-solid fa-info"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-900">Life changes happen. Keep your information current.</h4>
+                            <p class="text-base text-gray-700 mt-1">Updating your information here can save you time across many Government of Canada services.</p>
+                        </div>
+                    </div>
+                    <button class="data-card bg-goc-blue hover:bg-[#15203d] text-white font-semibold py-3 px-8 rounded-lg shadow-md transition-colors whitespace-nowrap flex-shrink-0 text-lg" data-type="Update Information">
+                        Update My Information
+                    </button>
+                </div>
+
+                <!-- Footer Spacer -->
+                <div class="h-8"></div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="bg-white border-t border-gray-200 py-8 px-8 z-10 w-full mt-auto">
+                <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-6">
+                    <div class="flex items-center">
+                        <span class="text-3xl font-bold tracking-tighter">Canada</span>
+                        <svg class="w-4 h-4 ml-1 mt-[-12px]" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M300 30l15 45h45l-35 30 15 50-40-30-40 30 15-50-35-30h45z" fill="#f00"/>
+                        </svg>
+                    </div>
+                    
+                    <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-goc-link font-medium">
+                        <a href="#" class="demo-link hover:underline">About this service</a>
+                        <a href="#" class="demo-link hover:underline">Privacy</a>
+                        <a href="#" class="demo-link hover:underline">Terms of use</a>
+                        <a href="#" class="demo-link hover:underline">Accessibility</a>
+                        <a href="#" class="demo-link hover:underline">Contact us</a>
+                    </div>
+
+                    <div class="text-center lg:text-right flex flex-col lg:items-end">
+                        <span class="text-sm text-gray-600 font-medium">A stronger Canada</span>
+                        <span class="text-sm text-gray-600 font-medium flex justify-center lg:justify-end items-center">
+                            for people, for generations. 
+                            <svg class="w-5 h-4 ml-2" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg"><rect width="600" height="300" fill="#f00"/><rect x="150" width="300" height="300" fill="#fff"/><path d="M300 30l15 45h45l-35 30 15 50-40-30-40 30 15-50-35-30h45z" fill="#f00" transform="scale(1.8) translate(-133, 10)"/></svg>
+                        </span>
+                    </div>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Reusable Modal Component -->
+    <div id="modal-container" class="modal-overlay fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+                <h3 id="modal-title" class="text-xl font-bold text-gray-900">Modal Title</h3>
+                <button id="modal-close-btn" class="text-gray-400 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-times text-lg"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div id="modal-body" class="p-6 overflow-y-auto">
+                <!-- Content injected via JS -->
+            </div>
+            
+            <!-- Modal Footer (Optional, can be built into forms) -->
+            <div id="modal-footer" class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3 hidden">
+                <!-- Buttons injected via JS if needed -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+        // Modal Data Content Map
+        const modalContents = {
+            'Addresses': `
+                <form class="space-y-4" onsubmit="event.preventDefault(); document.getElementById('modal-close-btn').click();">
+                    <p class="text-sm text-gray-600 mb-4">Update your primary residential and mailing addresses.</p>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Street Address</label>
+                        <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-goc-link focus:border-goc-link outline-none" value="123 Maple Street" placeholder="e.g. 123 Main St">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">City</label>
+                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-goc-link focus:border-goc-link outline-none" value="Ottawa">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Province</label>
+                            <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-goc-link focus:border-goc-link outline-none">
+                                <option value="ON" selected>Ontario</option>
+                                <option value="QC">Quebec</option>
+                                <option value="BC">British Columbia</option>
+                                <option value="AB">Alberta</option>
+                                <!-- Truncated for demo -->
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Postal Code</label>
+                        <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-goc-link focus:border-goc-link outline-none" value="K1A 0A9">
+                    </div>
+                    <div class="pt-4 flex justify-end gap-3">
+                        <button type="button" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 font-medium hover:bg-gray-50" onclick="document.getElementById('modal-close-btn').click()">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-goc-blue text-white rounded-md font-medium hover:bg-[#15203d]">Save Changes</button>
+                    </div>
+                </form>
+            `,
+            'Employment': `
+                <form class="space-y-4" onsubmit="event.preventDefault(); document.getElementById('modal-close-btn').click();">
+                    <p class="text-sm text-gray-600 mb-4">Manage your current and previous employment records.</p>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Current Employer</label>
+                        <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-goc-link outline-none" value="Tech Solutions Inc.">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Job Title</label>
+                        <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-goc-link outline-none" value="Senior Analyst">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Start Date</label>
+                            <input type="date" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-goc-link outline-none" value="2020-05-15">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">End Date</label>
+                            <input type="date" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-goc-link outline-none text-gray-400" disabled title="Leave blank if currently employed">
+                        </div>
+                    </div>
+                    <div class="pt-4 flex justify-end gap-3">
+                        <button type="button" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 font-medium hover:bg-gray-50" onclick="document.getElementById('modal-close-btn').click()">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-goc-blue text-white rounded-md font-medium hover:bg-[#15203d]">Save Changes</button>
+                    </div>
+                </form>
+            `,
+            'Family Connections': `
+                <form class="space-y-4" onsubmit="event.preventDefault(); document.getElementById('modal-close-btn').click();">
+                    <p class="text-sm text-gray-600 mb-4">Update marital status and dependents for benefit calculations.</p>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Marital Status</label>
+                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-goc-link outline-none">
+                            <option>Single</option>
+                            <option selected>Married</option>
+                            <option>Common-Law</option>
+                            <option>Divorced</option>
+                            <option>Widowed</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Number of Dependents (under 18)</label>
+                        <input type="number" min="0" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-goc-link outline-none" value="2">
+                    </div>
+                    <div class="pt-4 flex justify-end gap-3">
+                        <button type="button" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 font-medium hover:bg-gray-50" onclick="document.getElementById('modal-close-btn').click()">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-goc-blue text-white rounded-md font-medium hover:bg-[#15203d]">Save Changes</button>
+                    </div>
+                </form>
+            `,
+            'References': `
+                <div class="space-y-4">
+                    <p class="text-sm text-gray-600 mb-2">Manage professional references often used for security clearances or job applications.</p>
+                    <div class="border border-gray-200 rounded p-3 bg-gray-50 flex justify-between items-center">
+                        <div><p class="font-bold text-sm">Jane Doe</p><p class="text-xs text-gray-500">Former Manager - 555-0192</p></div>
+                        <button class="text-goc-link text-sm font-medium hover:underline">Edit</button>
+                    </div>
+                    <div class="border border-gray-200 rounded p-3 bg-gray-50 flex justify-between items-center">
+                        <div><p class="font-bold text-sm">John Smith</p><p class="text-xs text-gray-500">Colleague - 555-8472</p></div>
+                        <button class="text-goc-link text-sm font-medium hover:underline">Edit</button>
+                    </div>
+                    <button class="w-full border-2 border-dashed border-gray-300 rounded-md py-2 text-sm font-medium text-gray-500 hover:border-goc-link hover:text-goc-link transition-colors">
+                        + Add New Reference
+                    </button>
+                </div>
+            `,
+            'Identity Information': `
+                <form class="space-y-4" onsubmit="event.preventDefault(); document.getElementById('modal-close-btn').click();">
+                    <div class="bg-blue-50 border-l-4 border-blue-400 p-3 mb-4">
+                        <p class="text-xs text-blue-800">Note: Changing your legal identity information requires verification and supporting documents.</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Legal First Name</label>
+                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 bg-gray-50 text-gray-600 cursor-not-allowed" value="Taylor" disabled>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Legal Last Name</label>
+                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 bg-gray-50 text-gray-600 cursor-not-allowed" value="Morgan" disabled>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Date of Birth</label>
+                        <input type="date" class="w-full border border-gray-300 rounded-md px-3 py-2 bg-gray-50 text-gray-600 cursor-not-allowed" value="1985-10-22" disabled>
+                    </div>
+                    <div class="pt-2">
+                        <button type="button" class="text-goc-link text-sm font-medium hover:underline"><i class="fa-solid fa-file-arrow-up mr-1"></i> Submit a formal name change request</button>
+                    </div>
+                </form>
+            `,
+            'Contact Information': `
+                <form class="space-y-4" onsubmit="event.preventDefault(); document.getElementById('modal-close-btn').click();">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Primary Email Address</label>
+                        <input type="email" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-goc-link outline-none" value="taylor.morgan@example.ca">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Mobile Phone Number</label>
+                        <input type="tel" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-goc-link outline-none" value="(613) 555-0199">
+                    </div>
+                    <div class="pt-4 flex justify-end gap-3">
+                        <button type="button" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 font-medium hover:bg-gray-50" onclick="document.getElementById('modal-close-btn').click()">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-goc-blue text-white rounded-md font-medium hover:bg-[#15203d]">Save Changes</button>
+                    </div>
+                </form>
+            `,
+            'Update Information': `
+                <div class="text-center pb-2">
+                    <div class="mx-auto w-16 h-16 bg-goc-lightblue text-goc-blue rounded-full flex items-center justify-center text-2xl mb-4">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h4 class="text-lg font-bold text-gray-900 mb-2">Profile Update Wizard</h4>
+                    <p class="text-sm text-gray-600 mb-6">This wizard will guide you through a step-by-step process to review and update your core master data securely across all departments.</p>
+                    <div class="flex flex-col gap-3">
+                        <button class="w-full py-3 bg-goc-blue text-white rounded-lg font-bold hover:bg-[#15203d] transition-colors" onclick="document.getElementById('modal-close-btn').click()">Start Update Wizard</button>
+                        <button class="w-full py-3 text-gray-600 font-medium hover:bg-gray-100 rounded-lg transition-colors" onclick="document.getElementById('modal-close-btn').click()">Maybe Later</button>
+                    </div>
+                </div>
+            `,
+            'Prototype Notice': `
+                <div class="text-center py-6">
+                    <i class="fa-solid fa-laptop-code text-4xl text-gray-300 mb-4"></i>
+                    <h4 class="text-lg font-bold text-gray-900 mb-2">Prototype Demonstration Only</h4>
+                    <p class="text-sm text-gray-600 max-w-sm mx-auto">This link or action is not functional in the current visual prototype. It exists to demonstrate the UI layout and planned user journey.</p>
+                    <button class="mt-6 px-6 py-2 bg-gray-200 text-gray-800 font-semibold rounded-md hover:bg-gray-300 transition-colors" onclick="document.getElementById('modal-close-btn').click()">Understood</button>
+                </div>
+            `
+        };
+
+        // DOM Elements
+        const modalContainer = document.getElementById('modal-container');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+
+        // A11y & State Variables
+        let previouslyFocusedElement = null;
+        let currentAccessRow = null;
+
+        // Open Modal Function
+        function openModal(title, typeKey) {
+            previouslyFocusedElement = document.activeElement;
+            const content = modalContents[typeKey] || modalContents['Prototype Notice'];
+            modalTitle.innerText = title;
+            
+            // Adjust title styling/visibility for Prototype Notice
+            if(typeKey === 'Prototype Notice') {
+                modalTitle.innerText = "Notice";
+                modalTitle.parentElement.classList.remove('bg-gray-50');
+                modalTitle.parentElement.classList.add('bg-amber-50');
+            } else {
+                modalTitle.parentElement.classList.add('bg-gray-50');
+                modalTitle.parentElement.classList.remove('bg-amber-50');
+            }
+
+            modalBody.innerHTML = content;
+            modalContainer.classList.remove('hidden');
+
+            // Set initial focus for a11y
+            setTimeout(() => {
+                const focusable = modalContainer.querySelectorAll('button:not([disabled]), input:not([disabled]), select:not([disabled])');
+                if (focusable.length) {
+                    focusable[0].focus(); 
+                }
+            }, 10);
+        }
+
+        // Close Modal Function
+        function closeModal() {
+            modalContainer.classList.add('hidden');
+            if (previouslyFocusedElement) {
+                previouslyFocusedElement.focus();
+            }
+        }
+
+        // Event Listeners for Closing
+        modalCloseBtn.addEventListener('click', closeModal);
+        modalContainer.addEventListener('click', (e) => {
+            if (e.target === modalContainer) {
+                closeModal();
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modalContainer.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+        // Focus Trap for Accessibility
+        modalContainer.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab' && !modalContainer.classList.contains('hidden')) {
+                const focusableElements = modalContainer.querySelectorAll('a[href], button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])');
+                if (focusableElements.length === 0) return;
+                
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
+
+                if (e.shiftKey) { // shift + tab
+                    if (document.activeElement === firstElement || document.activeElement === modalContainer) {
+                        lastElement.focus();
+                        e.preventDefault();
+                    }
+                } else { // tab
+                    if (document.activeElement === lastElement) {
+                        firstElement.focus();
+                        e.preventDefault();
+                    }
+                }
+            }
+        });
+
+        // Update Access State Function
+        window.updateAccess = function(newStatus) {
+            if (!currentAccessRow) return;
+            
+            currentAccessRow.setAttribute('data-status', newStatus);
+            const pill = currentAccessRow.querySelector('.status-pill');
+            
+            if (newStatus === 'granted') {
+                pill.className = 'status-pill px-3 py-1 text-xs font-bold rounded-full bg-green-100 text-green-800 border border-green-200';
+                pill.innerText = 'Access granted';
+            } else {
+                pill.className = 'status-pill px-3 py-1 text-xs font-bold rounded-full bg-gray-100 text-gray-600 border border-gray-200';
+                pill.innerText = 'Not granted';
+            }
+            
+            closeModal();
+        };
+
+        // Open Access Specific Modal
+        function openAccessModal(row) {
+            currentAccessRow = row;
+            previouslyFocusedElement = document.activeElement;
+            const deptName = row.getAttribute('data-dept');
+            const currentStatus = row.getAttribute('data-status');
+            
+            modalTitle.innerText = "Manage Access Permissions";
+            modalTitle.parentElement.classList.add('bg-gray-50');
+            modalTitle.parentElement.classList.remove('bg-amber-50');
+
+            let content = `
+                <div class="space-y-4">
+                    <p class="text-sm text-gray-600">Manage data sharing permissions for <strong>${deptName}</strong>.</p>
+                    <div class="bg-gray-50 p-4 rounded-md border border-gray-200">
+                        <span class="block text-sm font-semibold text-gray-700 mb-2">Current Status:</span>
+                        ${currentStatus === 'granted' 
+                            ? '<span class="inline-block px-3 py-1 text-sm font-bold rounded-full bg-green-100 text-green-800 border border-green-200"><i class="fa-solid fa-check-circle mr-1"></i> Access granted</span>' 
+                            : '<span class="inline-block px-3 py-1 text-sm font-bold rounded-full bg-gray-100 text-gray-600 border border-gray-200"><i class="fa-solid fa-ban mr-1"></i> Not granted</span>'}
+                    </div>
+                    <div class="pt-4 flex justify-end gap-3 border-t border-gray-200 mt-6">
+                        <button type="button" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 font-medium hover:bg-gray-50 focus:ring-2 focus:ring-goc-blue outline-none transition-colors" onclick="closeModal()">Cancel</button>
+                        ${currentStatus === 'granted'
+                            ? `<button type="button" class="px-4 py-2 bg-red-600 text-white rounded-md font-medium hover:bg-red-700 focus:ring-2 focus:ring-red-800 outline-none transition-colors" onclick="updateAccess('revoked')">Revoke Access</button>`
+                            : `<button type="button" class="px-4 py-2 bg-goc-blue text-white rounded-md font-medium hover:bg-[#15203d] focus:ring-2 focus:ring-goc-blue outline-none transition-colors" onclick="updateAccess('granted')">Grant Access</button>`
+                        }
+                    </div>
+                </div>
+            `;
+            modalBody.innerHTML = content;
+            modalContainer.classList.remove('hidden');
+            
+            // Set initial focus for a11y
+            setTimeout(() => {
+                const focusable = modalContainer.querySelectorAll('button:not([disabled])');
+                if (focusable.length) {
+                    focusable[focusable.length - 1].focus(); // Focus primary action button
+                }
+            }, 10);
+        }
+
+        // Attach listeners to Data Cards (Modals with forms)
+        document.querySelectorAll('.data-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                e.preventDefault();
+                const type = this.getAttribute('data-type');
+                openModal(`Edit ${type}`, type);
+            });
+        });
+
+        // Attach listeners to Demo Links (Generic prototype modal)
+        document.querySelectorAll('.demo-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                openModal('Prototype Notice', 'Prototype Notice');
+            });
+        });
+
+        // Attach listeners to Access Rows
+        document.querySelectorAll('.access-row').forEach(row => {
+            row.addEventListener('click', function(e) {
+                e.preventDefault();
+                openAccessModal(this);
+            });
+            row.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openAccessModal(this);
+                }
+            });
+        });
+
+        // Specific sidebar scroll behaviour handling for better UX inside a flex layout
+        // Native scroll-smooth on html works, but we also ensure the scroll area catches it properly if needed.
+        document.querySelectorAll('aside nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                // Only override if it's an internal link with an actual ID
+                const targetId = this.getAttribute('href').substring(1);
+                if (targetId && targetId.length > 1) {
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        e.preventDefault();
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        
+                        // Update active state in sidebar visually (optional enhancement)
+                        document.querySelectorAll('aside nav a').forEach(a => {
+                            a.classList.remove('bg-goc-lightblue', 'border-goc-blue', 'text-goc-blue', 'font-semibold');
+                            a.classList.add('border-transparent', 'text-gray-600');
+                        });
+                        this.classList.add('bg-goc-lightblue', 'border-goc-blue', 'text-goc-blue', 'font-semibold');
+                        this.classList.remove('border-transparent', 'text-gray-600');
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
