@@ -44,10 +44,10 @@
         }
     </script>
 </head>
-<body class="text-gray-800 antialiased flex flex-col h-screen overflow-hidden">
+<body class="text-gray-800 antialiased flex flex-col min-h-screen">
 
     <!-- 1. Top Header -->
-    <header class="bg-white border-b border-gray-200 px-4 sm:px-6 py-3 flex flex-col sm:flex-row justify-between items-center z-20 relative flex-shrink-0 w-full">
+    <header class="sticky top-0 z-50 bg-white border-b border-gray-200 px-4 sm:px-6 py-3 flex flex-col sm:flex-row justify-between items-center w-full shadow-sm">
         <!-- Logo & Mobile Menu Button -->
         <div class="flex items-center justify-between sm:justify-start w-full sm:w-auto mb-4 sm:mb-0 space-x-4">
             <div class="flex items-center space-x-3 sm:space-x-4">
@@ -83,13 +83,13 @@
     </header>
 
     <!-- Main App Container (Sidebar + Content) -->
-    <div class="flex flex-1 overflow-hidden relative">
+    <div class="flex flex-1 relative w-full">
         
         <!-- Mobile Menu Overlay -->
-        <div id="mobile-menu-overlay" class="fixed inset-0 bg-gray-900/50 z-30 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
+        <div id="mobile-menu-overlay" class="fixed inset-0 bg-gray-900/50 z-[55] hidden md:hidden backdrop-blur-sm transition-opacity"></div>
 
         <!-- Left Sidebar -->
-        <aside id="sidebar-menu" class="fixed inset-y-0 left-0 z-40 w-72 bg-[#f8f9fa] border-r border-gray-200 overflow-y-auto transform -translate-x-full transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:w-64 md:z-0 md:block flex flex-col h-full shadow-2xl md:shadow-none">
+        <aside id="sidebar-menu" class="fixed inset-y-0 left-0 z-[60] w-72 bg-[#f8f9fa] border-r border-gray-200 overflow-y-auto transform -translate-x-full transition-transform duration-300 ease-in-out md:sticky md:top-[74px] md:translate-x-0 md:w-64 md:block flex flex-col md:h-[calc(100vh-74px)] shadow-2xl md:shadow-none">
             
             <!-- Mobile Sidebar Header -->
             <div class="md:hidden p-4 flex justify-between items-center border-b border-gray-200 bg-white sticky top-0 z-10">
@@ -154,7 +154,7 @@
         </aside>
 
         <!-- Main Content Area -->
-        <main class="flex-1 overflow-y-auto bg-gray-50 flex flex-col relative" id="main-scroll-area">
+        <main class="flex-1 bg-gray-50 flex flex-col relative w-full overflow-x-hidden" id="main-scroll-area">
             
             <!-- 2. Dark Blue Sub-header -->
             <div id="overview" class="bg-goc-blue text-white px-8 py-8 relative flex justify-end items-center flex-shrink-0">
@@ -191,7 +191,7 @@
                 </div>
 
                 <!-- Section 1: Your Information -->
-                <section id="your-information" class="mb-12 scroll-mt-6">
+                <section id="your-information" class="mb-12 scroll-mt-24">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col">
                         <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white">
                             <div>
@@ -268,7 +268,7 @@
 
                 <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-12">
                     <!-- Section 2: Access & Permissions -->
-                    <section id="access-permissions" class="scroll-mt-6">
+                    <section id="access-permissions" class="scroll-mt-24">
                         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-full flex flex-col">
                             <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white">
                                 <div>
@@ -316,7 +316,7 @@
                     </section>
 
                     <!-- Section 3: Recent Access History -->
-                    <section id="access-history" class="scroll-mt-6">
+                    <section id="access-history" class="scroll-mt-24">
                         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden h-full flex flex-col">
                             <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white">
                                 <div>
@@ -368,7 +368,7 @@
                 </div>
 
                 <!-- Section 4: Forms & Services -->
-                <section id="forms-services" class="mb-10 scroll-mt-6">
+                <section id="forms-services" class="mb-10 scroll-mt-24">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                         <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white">
                             <div>
@@ -475,7 +475,7 @@
     </div>
 
     <!-- Reusable Modal Component -->
-    <div id="modal-container" class="modal-overlay fixed inset-0 bg-black/60 z-[60] hidden flex items-center justify-center p-4">
+    <div id="modal-container" class="modal-overlay fixed inset-0 bg-black/60 z-[70] hidden flex items-center justify-center p-4">
         <div class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]" role="dialog" aria-modal="true" aria-labelledby="modal-title">
             
             <!-- Modal Header -->
