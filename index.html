@@ -8,17 +8,27 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Noto Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
+            font-family: 'Noto Sans', sans-serif;
+            background-color: #ffffff;
+            color: #333333;
+        }
+        /* Canada.ca Design System - Strict square corners */
+        *, *::before, *::after {
+            border-radius: 0 !important;
+        }
+        /* High contrast focus outline for accessibility */
+        *:focus-visible {
+            outline: 3px solid #0535d2 !important;
+            outline-offset: 2px !important;
         }
         /* Custom scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 0; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
         /* Modal animation */
@@ -26,6 +36,16 @@
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .modal-overlay { animation: fadeIn 0.2s ease-out; }
         .modal-content { animation: slideUp 0.3s ease-out; }
+
+        /* Enforce high-contrast links */
+        a.text-goc-link, .demo-link.text-goc-link {
+            color: #0535d2 !important;
+            text-decoration: underline !important;
+            text-underline-offset: 3px;
+        }
+        a.text-goc-link:hover, .demo-link.text-goc-link:hover {
+            color: #000000 !important;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -33,21 +53,24 @@
                 extend: {
                     colors: {
                         goc: {
-                            blue: '#1e2b4d',
-                            red: '#e31837',
-                            lightblue: '#e8f2f8',
-                            link: '#2b6cb0'
+                            blue: '#26374a',
+                            red: '#af3c43',
+                            lightblue: '#eaebed',
+                            link: '#0535d2'
                         }
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans"', 'sans-serif']
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="text-gray-800 antialiased flex flex-col min-h-screen">
+<body class="text-[#333333] antialiased flex flex-col min-h-screen">
 
     <!-- 1. Top Header -->
-    <header class="sticky top-0 z-50 bg-white border-b border-gray-200 px-4 sm:px-6 py-3 flex flex-col sm:flex-row justify-between items-center w-full shadow-sm">
+    <header class="sticky top-0 z-50 bg-white border-b-[3px] border-[#26374a] px-4 sm:px-6 py-3 flex flex-col sm:flex-row justify-between items-center w-full">
         <!-- Logo & Mobile Menu Button -->
         <div class="flex items-center justify-between sm:justify-start w-full sm:w-auto mb-4 sm:mb-0 space-x-4">
             <div class="flex items-center space-x-3 sm:space-x-4">
@@ -170,8 +193,8 @@
                 
                 <!-- Main Content Header -->
                 <div class="mb-10">
-                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">My Information for a Brighter Tomorrow</h1>
-                    <p class="text-gray-600 text-lg sm:text-xl max-w-3xl">Keep your key information up to date and securely share it across Government of Canada services.</p>
+                    <h1 class="text-3xl sm:text-4xl font-bold text-[#333333] mb-4 pb-2 border-b-[3px] border-[#af3c43] inline-block w-full">My Information for a Brighter Tomorrow</h1>
+                    <p class="text-[#555555] text-lg sm:text-xl max-w-3xl">Keep your key information up to date and securely share it across Government of Canada services.</p>
                 </div>
 
                 <!-- Feature Row -->
