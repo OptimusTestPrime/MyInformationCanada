@@ -52,15 +52,12 @@
         <div class="flex items-center justify-between sm:justify-start w-full sm:w-auto mb-4 sm:mb-0 space-x-4">
             <div class="flex items-center space-x-3 sm:space-x-4">
                 <!-- Mobile Hamburger -->
-                <button id="mobile-menu-btn" class="md:hidden text-gray-700 hover:text-goc-blue focus:outline-none p-1 rounded transition-colors" aria-label="Open Menu">
+                <button id="mobile-menu-btn" class="md:hidden flex items-center space-x-2 text-gray-700 hover:text-goc-blue bg-white border border-gray-300 focus:outline-none px-3 py-1.5 rounded shadow-sm transition-colors" aria-label="Open Menu">
                     <i class="fa-solid fa-bars text-xl"></i>
+                    <span class="font-bold text-sm uppercase tracking-wide">Menu</span>
                 </button>
                 <!-- SVG Logo -->
-                <svg class="w-8 h-6 flex-shrink-0" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="600" height="300" fill="#f00"/>
-                    <rect x="150" width="300" height="300" fill="#fff"/>
-                    <path d="M300 30l15 45h45l-35 30 15 50-40-30-40 30 15-50-35-30h45z" fill="#f00" transform="scale(1.8) translate(-133, 10)"/>
-                </svg>
+                <i class="fab fa-canadian-maple-leaf text-red-600 text-3xl flex-shrink-0"></i>
                 <div class="flex flex-col text-sm font-semibold leading-tight">
                     <span>Government</span><span>of Canada</span>
                 </div>
@@ -449,9 +446,7 @@
                 <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-6">
                     <div class="flex items-center">
                         <span class="text-3xl font-bold tracking-tighter">Canada</span>
-                        <svg class="w-4 h-4 ml-1 mt-[-12px]" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M300 30l15 45h45l-35 30 15 50-40-30-40 30 15-50-35-30h45z" fill="#f00"/>
-                        </svg>
+                        <i class="fab fa-canadian-maple-leaf text-red-600 text-sm ml-0.5 mt-[-16px]"></i>
                     </div>
                     
                     <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-goc-link font-medium">
@@ -466,12 +461,17 @@
                         <span class="text-sm text-gray-600 font-medium">A stronger Canada</span>
                         <span class="text-sm text-gray-600 font-medium flex justify-center lg:justify-end items-center">
                             for people, for generations. 
-                            <svg class="w-5 h-4 ml-2" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg"><rect width="600" height="300" fill="#f00"/><rect x="150" width="300" height="300" fill="#fff"/><path d="M300 30l15 45h45l-35 30 15 50-40-30-40 30 15-50-35-30h45z" fill="#f00" transform="scale(1.8) translate(-133, 10)"/></svg>
+                            <i class="fab fa-canadian-maple-leaf text-red-600 text-lg ml-2"></i>
                         </span>
                     </div>
                 </div>
             </footer>
         </main>
+    </div>
+
+    <!-- Prototype Disclaimer Bar -->
+    <div class="bg-amber-50 border-t border-amber-200 text-amber-800 text-xs sm:text-sm py-2 px-4 text-center z-50 flex-shrink-0 w-full relative font-medium shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+        Unofficial design prototype - Sample data - Changes last only while this page is open - No information is sent anywhere
     </div>
 
     <!-- Reusable Modal Component -->
