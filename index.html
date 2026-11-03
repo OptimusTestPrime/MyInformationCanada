@@ -47,19 +47,26 @@
 <body class="text-gray-800 antialiased flex flex-col h-screen overflow-hidden">
 
     <!-- 1. Top Header -->
-    <header class="bg-white border-b border-gray-200 px-6 py-3 flex flex-col sm:flex-row justify-between items-center z-20 relative flex-shrink-0">
-        <!-- Logo -->
-        <div class="flex items-center space-x-4 mb-4 sm:mb-0">
-            <svg class="w-8 h-6" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
-                <rect width="600" height="300" fill="#f00"/>
-                <rect x="150" width="300" height="300" fill="#fff"/>
-                <path d="M300 30l15 45h45l-35 30 15 50-40-30-40 30 15-50-35-30h45z" fill="#f00" transform="scale(1.8) translate(-133, 10)"/>
-            </svg>
-            <div class="flex flex-col text-sm font-semibold leading-tight">
-                <span>Government</span><span>of Canada</span>
-            </div>
-            <div class="flex flex-col text-sm font-semibold leading-tight border-l border-gray-300 pl-4">
-                <span>Gouvernement</span><span>du Canada</span>
+    <header class="bg-white border-b border-gray-200 px-4 sm:px-6 py-3 flex flex-col sm:flex-row justify-between items-center z-20 relative flex-shrink-0 w-full">
+        <!-- Logo & Mobile Menu Button -->
+        <div class="flex items-center justify-between sm:justify-start w-full sm:w-auto mb-4 sm:mb-0 space-x-4">
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <!-- Mobile Hamburger -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700 hover:text-goc-blue focus:outline-none p-1 rounded transition-colors" aria-label="Open Menu">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <!-- SVG Logo -->
+                <svg class="w-8 h-6 flex-shrink-0" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="600" height="300" fill="#f00"/>
+                    <rect x="150" width="300" height="300" fill="#fff"/>
+                    <path d="M300 30l15 45h45l-35 30 15 50-40-30-40 30 15-50-35-30h45z" fill="#f00" transform="scale(1.8) translate(-133, 10)"/>
+                </svg>
+                <div class="flex flex-col text-sm font-semibold leading-tight">
+                    <span>Government</span><span>of Canada</span>
+                </div>
+                <div class="flex flex-col text-sm font-semibold leading-tight border-l border-gray-300 pl-3 sm:pl-4">
+                    <span>Gouvernement</span><span>du Canada</span>
+                </div>
             </div>
         </div>
 
@@ -79,12 +86,27 @@
     </header>
 
     <!-- Main App Container (Sidebar + Content) -->
-    <div class="flex flex-1 overflow-hidden">
+    <div class="flex flex-1 overflow-hidden relative">
         
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu-overlay" class="fixed inset-0 bg-gray-900/50 z-30 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
+
         <!-- Left Sidebar -->
-        <aside class="w-full md:w-64 bg-[#f8f9fa] border-r border-gray-200 flex-shrink-0 overflow-y-auto hidden md:block">
-            <nav class="py-6">
-                <div class="px-6 mb-2 flex items-center space-x-3 text-gray-800 font-bold">
+        <aside id="sidebar-menu" class="fixed inset-y-0 left-0 z-40 w-72 bg-[#f8f9fa] border-r border-gray-200 overflow-y-auto transform -translate-x-full transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:w-64 md:z-0 md:block flex flex-col h-full shadow-2xl md:shadow-none">
+            
+            <!-- Mobile Sidebar Header -->
+            <div class="md:hidden p-4 flex justify-between items-center border-b border-gray-200 bg-white sticky top-0 z-10">
+                <div class="flex items-center space-x-2 text-goc-blue font-bold">
+                    <i class="fa-solid fa-user-circle text-lg"></i>
+                    <span>My Information</span>
+                </div>
+                <button id="mobile-menu-close-btn" class="text-gray-500 hover:text-gray-800 p-2 rounded-full hover:bg-gray-100 transition-colors focus:outline-none" aria-label="Close Menu">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <nav class="py-6 flex-1">
+                <div class="px-6 mb-2 hidden md:flex items-center space-x-3 text-gray-800 font-bold">
                     <i class="fa-solid fa-user-circle text-lg"></i>
                     <span>My Information</span>
                 </div>
@@ -453,7 +475,7 @@
     </div>
 
     <!-- Reusable Modal Component -->
-    <div id="modal-container" class="modal-overlay fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div id="modal-container" class="modal-overlay fixed inset-0 bg-black/60 z-[60] hidden flex items-center justify-center p-4">
         <div class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]" role="dialog" aria-modal="true" aria-labelledby="modal-title">
             
             <!-- Modal Header -->
@@ -796,6 +818,10 @@
         document.querySelectorAll('.demo-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
+                // Close mobile menu if open before showing prototype notice
+                if (window.innerWidth < 768 && typeof closeMobileMenu === 'function') {
+                    closeMobileMenu();
+                }
                 openModal('Prototype Notice', 'Prototype Notice');
             });
         });
@@ -836,10 +862,37 @@
                         });
                         this.classList.add('bg-goc-lightblue', 'border-goc-blue', 'text-goc-blue', 'font-semibold');
                         this.classList.remove('border-transparent', 'text-gray-600');
+                        
+                        // Close mobile menu if clicked on mobile device
+                        if (window.innerWidth < 768 && typeof closeMobileMenu === 'function') {
+                            closeMobileMenu();
+                        }
                     }
                 }
             });
         });
+
+        // --- Mobile Menu Functionality ---
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenuCloseBtn = document.getElementById('mobile-menu-close-btn');
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+
+        function openMobileMenu() {
+            if (!sidebarMenu || !mobileMenuOverlay) return;
+            sidebarMenu.classList.remove('-translate-x-full');
+            mobileMenuOverlay.classList.remove('hidden');
+        }
+
+        function closeMobileMenu() {
+            if (!sidebarMenu || !mobileMenuOverlay) return;
+            sidebarMenu.classList.add('-translate-x-full');
+            mobileMenuOverlay.classList.add('hidden');
+        }
+
+        if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMobileMenu);
+        if (mobileMenuCloseBtn) mobileMenuCloseBtn.addEventListener('click', closeMobileMenu);
+        if (mobileMenuOverlay) mobileMenuOverlay.addEventListener('click', closeMobileMenu);
     </script>
 </body>
 </html>
